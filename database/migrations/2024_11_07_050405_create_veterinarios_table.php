@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('especialidad_id')->nullable()->constrained('especialidades')->onDelete('set null');
-            $table->string('nombre_completo', 100);
+            $table->string('nombres', 100);
+            $table->string('apellidos', 100);
             $table->string('telefono', 15)->nullable();
             $table->text('direccion')->nullable();
             $table->timestamps();
