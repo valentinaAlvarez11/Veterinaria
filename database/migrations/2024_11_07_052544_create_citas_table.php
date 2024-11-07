@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('mascota_id')->constrained('mascotas')->onDelete('cascade');
             $table->foreignId('veterinario_id')->constrained('veterinarios')->onDelete('cascade');
             $table->foreignId('servicio_id')->constrained('servicios')->onDelete('cascade');
-            $table->dateTime('fecha_hora');
+            $table->date('fecha');
+            $table->time('hora');
             $table->enum('estado', ['pendiente', 'confirmada', 'cancelada'])->default('pendiente');
             $table->text('comentarios')->nullable();
             $table->timestamps();
