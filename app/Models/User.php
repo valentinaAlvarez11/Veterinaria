@@ -2,34 +2,42 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Veterinario extends Model
+class User extends Authenticatable
 {
     use HasFactory;
 
+    /**
+     * Los atributos que se pueden asignar masivamente.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'nombre_completo', 'especialidad_id'
+        'name',
+        'email',
+        'password',
     ];
 
+    /**
+     * Los atributos que deben ser ocultos para los arrays.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Los atributos que deben ser convertidos a tipos nativos.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'email_verified_at' => 'datetime',
     ];
-
-    public function especialidad()
-    {
-        return $this->belongsTo(Especialidad::class);
-    }
-
-    public function citas()
-    {
-        return $this->hasMany(Cita::class);
-    }
-
-    public function disponibilidades()
-    {
-        return $this->hasMany(Disponibilidad::class);
-    }
 }
