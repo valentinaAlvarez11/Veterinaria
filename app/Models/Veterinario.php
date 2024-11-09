@@ -9,14 +9,7 @@ class Veterinario extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nombre_completo', 'especialidad_id'
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    protected $fillable = ['nombre_completo', 'especialidad_id'];
 
     public function especialidad()
     {
