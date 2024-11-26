@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servicios', function (Blueprint $table) {
+        Schema::create('veterinarians', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100)->unique();
-            $table->text('descripcion')->nullable();
-            $table->decimal('precio', 8, 2)->nullable();
+            $table->string('name');
+            $table->string('specialty');
+            $table->string('email')->unique();
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servicios');
+        Schema::dropIfExists('veterinarians');
     }
 };
