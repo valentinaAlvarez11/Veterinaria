@@ -23,4 +23,5 @@ Route::apiResource('pets', PetController::class);
 
 //Asociar una especialidad a un servicio
 Route::post('/speciality/{specialty}/services', [ServiceController::class, 'associateSpecialty']);
-
+//Asociar una mascota a un cliente
+Route::post('/clients/{clientId}/pets', [ClientController::class, 'addPetToClient']);

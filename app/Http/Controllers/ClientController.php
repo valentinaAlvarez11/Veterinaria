@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Pet;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -14,7 +15,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all(); // Obtener todos los clientes
+        // Obtener todos los clientes con sus mascotas asociadas
+        $clients = Client::with('pets')->get(); // Usamos eager loading
+
         return response()->json($clients, 200);
     }
 
@@ -56,6 +59,9 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        // Cargar las mascotas asociadas al cliente
+        $client = Client::with('pets')->findOrFail($client->id);
+
         return response()->json($client, 200);
     }
 
@@ -103,5 +109,43 @@ class ClientController extends Controller
         return response()->json([
             'message' => 'Cliente eliminado con éxito',
         ], 200);
+    }
+
+    /**
+     * Asociar una mascota a un cliente.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $clientId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addPetToClient(Request $request, $clientId)
+    {
+        // Validación de datos
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'breed' => 'required|string|max:255',
+            'age' => 'required|integer',
+            'medical_conditions' => 'nullable|string',
+        ]);
+
+        // Encontrar al cliente
+        $client = Client::findOrFail($clientId);
+
+        // Crear la mascota y asociarla al cliente
+        $pet = new Pet([
+            'name' => $request->name,
+            'breed' => $request->breed,
+            'age' => $request->age,
+            'medical_conditions' => $request->medical_conditions,
+        ]);
+
+        // Asociar la mascota al cliente
+        $client->pets()->save($pet);
+
+        // Retornar respuesta
+        return response()->json([
+            'message' => 'Mascota asociada al cliente con éxito.',
+            'data' => $pet,
+        ], 201);
     }
 }
