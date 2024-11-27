@@ -7,23 +7,12 @@ use Illuminate\Http\Request;
 
 class SpecialtyController extends Controller
 {
-    /**
-     * Muestra una lista de especialidades.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function index()
     {
-        $specialties = Specialty::all(); // Obtiene todas las especialidades
+        $specialties = Specialty::all();
         return response()->json($specialties, 200);
     }
-
-    /**
-     * Almacena una nueva especialidad.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -37,25 +26,11 @@ class SpecialtyController extends Controller
             'data' => $specialty,
         ], 201);
     }
-
-    /**
-     * Muestra una especialidad específica.
-     *
-     * @param  \App\Models\Specialty  $specialty
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function show(Specialty $specialty)
     {
         return response()->json($specialty, 200);
     }
 
-    /**
-     * Actualiza una especialidad existente.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Specialty  $specialty
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function update(Request $request, Specialty $specialty)
     {
         $request->validate([
@@ -70,12 +45,6 @@ class SpecialtyController extends Controller
         ], 200);
     }
 
-    /**
-     * Elimina una especialidad.
-     *
-     * @param  \App\Models\Specialty  $specialty
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function destroy(Specialty $specialty)
     {
         $specialty->delete();
