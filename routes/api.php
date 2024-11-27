@@ -25,3 +25,14 @@ Route::apiResource('pets', PetController::class);
 Route::post('/speciality/{specialty}/services', [ServiceController::class, 'associateSpecialty']);
 //Asociar una mascota a un cliente
 Route::post('/clients/{clientId}/pets', [ClientController::class, 'addPetToClient']);
+
+
+//Autenticación
+Route::post('/v1/login',
+    [App\Http\Controllers\api\v1\AuthController::class,
+        'login'])->name('api.login');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/v1/logout',
+        [App\Http\Controllers\api\v1\AuthController::class,
+            'logout'])->name('api.logout');
+        });

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             SpecialtiesSeeder::class,
             ServicesSeeder::class,
             ClientsSeeder::class,
+            UsersSeeder::class,
         ]);
     }
 }
