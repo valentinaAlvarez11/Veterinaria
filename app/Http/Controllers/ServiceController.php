@@ -9,13 +9,15 @@ use Illuminate\Http\Request;
 class ServiceController extends Controller
 {
     /**
-     * Muestra una lista de los servicios disponibles.
+     * Muestra una lista de los servicios disponibles con su especialidad.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $services = Service::all(); // Obtiene todos los servicios
+        // Obtener todos los servicios con la especialidad asociada
+        $services = Service::with('specialty')->get();
+
         return response()->json($services, 200);
     }
 
@@ -94,11 +96,46 @@ class ServiceController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Service $service)
-{
-    $service->delete();
+    {
+        $service->delete();
 
-    return response()->json([
-        'message' => 'Servicio eliminado correctamente',
-    ], 200); 
+        return response()->json([
+            'message' => 'Servicio eliminado correctamente',
+        ], 200); 
     }
+
+    /**
+     * Asocia una especialidad a un servicio.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Service  $service
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function associateSpecialty(Request $request, $serviceId)
+    {
+        // Validar la entrada
+        $request->validate([
+            'specialty_id' => 'required|exists:specialties,id', // Validamos que la especialidad exista
+            'name' => 'required|string|max:255', // Validamos el nombre del servicio
+        ]);
+    
+        // Encontramos el servicio
+        $service = Service::findOrFail($serviceId);
+    
+        // Asociamos la especialidad al servicio
+        $service->specialty_id = $request->specialty_id;
+    
+        // Actualizamos el nombre si es necesario
+        if ($request->has('name')) {
+            $service->name = $request->name;
+        }
+    
+        // Guardamos el servicio actualizado
+        $service->save();
+    
+        return response()->json([
+            'message' => 'Especialidad asociada correctamente al servicio',
+            'data' => $service,
+        ], 200);
+    }    
 }

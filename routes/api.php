@@ -12,6 +12,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+//CRUDS
 Route::apiResource('veterinarians', VeterinarianController::class);
 Route::apiResource('specialties', SpecialtyController::class);
 Route::apiResource('services', ServiceController::class);
+
+//Asociar una especialidad a un servicio
+Route::post('/speciality/{specialty}/services', [ServiceController::class, 'associateSpecialty']);
+
