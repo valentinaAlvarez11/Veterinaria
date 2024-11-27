@@ -17,12 +17,14 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com.co',
+            'email' => 'test@example.com.com.co.co',
         ]);
 
         $this->call([
             VeterinariansSeeder::class,
             SpecialtiesSeeder::class,
+            ServicesSeeder::class,
+            ClientsSeeder::class,
         ]);
     }
 }
