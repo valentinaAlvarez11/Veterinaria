@@ -1,9 +1,11 @@
 <?php
 
+// app/Http/Controllers/AppointmentController.php
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AppointmentController extends Controller
 {
@@ -19,8 +21,15 @@ class AppointmentController extends Controller
             'veterinarian_id' => 'required|exists:veterinarians,id',
             'appointment_date' => 'required|date',
             'reason' => 'required|string|max:255',
+            'appointment_date' => [
+                'required',
+                'date',
+                Rule::unique('appointments')->where(function ($query) use ($request) {
+                    return $query->where('veterinarian_id', $request->veterinarian_id)
+                                 ->where('appointment_date', $request->appointment_date);
+                })
+            ]
         ]);
-
         $appointment = Appointment::create($validated);
 
         return response()->json($appointment, 201);
@@ -43,8 +52,6 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::findOrFail($id);
         $appointment->delete();
-
-        // Devolvemos un mensaje de éxito en la respuesta JSON
         return response()->json(['message' => 'Cita eliminada exitosamente'], 200);
     }
 }
