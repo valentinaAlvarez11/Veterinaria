@@ -8,14 +8,12 @@ use Illuminate\Http\Request;
 
 class PetController extends Controller
 {
-    // Muestra todos las mascotas
     public function index()
     {
-        $pets = Pet::all();
+        $pets = Pet::with('veterinarians')->get();
         return response()->json($pets, 200);
     }
 
-    // Crea una nueva mascota
     public function store(Request $request)
     {
         $request->validate([
@@ -23,7 +21,7 @@ class PetController extends Controller
             'breed' => 'required|string|max:255',
             'age' => 'required|integer',
             'medical_conditions' => 'nullable|string',
-            'client_id' => 'required|exists:clients,id', // Verifica que el cliente exista
+            'client_id' => 'required|exists:clients,id',
         ]);
 
         $pet = Pet::create($request->all());
@@ -34,14 +32,12 @@ class PetController extends Controller
         ], 201);
     }
 
-    // Muestra una mascota específica
     public function show($id)
     {
-        $pet = Pet::findOrFail($id);
+        $pet = Pet::with('veterinarians')->findOrFail($id);
         return response()->json($pet, 200);
     }
 
-    // Actualiza los datos de una mascota
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -61,14 +57,28 @@ class PetController extends Controller
         ], 200);
     }
 
-    // Elimina una mascota
     public function destroy($id)
     {
         $pet = Pet::findOrFail($id);
         $pet->delete();
-
         return response()->json([
             'message' => 'Mascota eliminada con éxito',
         ], 200);
     }
+
+    public function assignVeterinarians(Request $request, $petId)
+    {
+        $request->validate([
+            'veterinarians' => 'required|array', 
+            'veterinarians.*' => 'exists:veterinarians,id',
+        ]);
+        $pet = Pet::findOrFail($petId);
+        $pet->veterinarians()->syncWithoutDetaching($request->input('veterinarians'));
+
+        return response()->json([
+            'message' => 'Veterinario asignado con éxito a la mascota.',
+            'data' => $pet->veterinarians,
+        ]);
+    }
 }
+

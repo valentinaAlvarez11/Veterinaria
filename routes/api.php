@@ -30,6 +30,12 @@ Route::post('/speciality/{specialty}/services', [ServiceController::class, 'asso
 Route::post('/clients/{clientId}/pets', [ClientController::class, 'addPetToClient']);
 //Asociar una especialidad y un servicio a un veterinario
 Route::post('veterinarians/{veterinarian}/services', [VeterinarianController::class, 'attachService']);
+//Asignar una cita a un veterinario
+
+//Asignar un veterinario a una mascota
+Route::post('pet/{petId}/veterinarians', [PetController::class, 'assignVeterinarians']);
+//Asignar historial médico a una mascota
+
 
 
 Route::get('/appointments/pending/{veterinarianId}', [AppointmentController::class, 'pendingAppointments']);
