@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Veterinarian;
 use Illuminate\Http\Request;
+use App\Http\Requests\VeterinarianStoreRequest;
+use App\Http\Requests\VeterinarianUpdateRequest;
+use App\Http\Resources\VeterinarianResource;
 
 class VeterinarianController extends Controller
 {
@@ -12,7 +16,8 @@ class VeterinarianController extends Controller
      */
     public function index()
     {
-        return Veterinarian::all();
+        $veterinarians = Veterinarian::orderBy('name', 'asc')->get();
+        return response()->json(['data' => VeterinarianResource::collection($veterinarians)], 200);
     }
 
     /**
@@ -21,8 +26,7 @@ class VeterinarianController extends Controller
     public function store(Request $request)
     {
         $veterinarian = Veterinarian::create($request->all());
-
-        return response()->json($veterinarian, 201);
+        return response()->json(['data' => $veterinarian], 201);
     }
 
     /**
@@ -30,7 +34,7 @@ class VeterinarianController extends Controller
      */
     public function show(Veterinarian $veterinarian)
     {
-        return response()->json($veterinarian, 200);
+        return response()->json(['data' => new VeterinarianResource($veterinarian)], 200);
     }
 
     /**
@@ -39,8 +43,7 @@ class VeterinarianController extends Controller
     public function update(Request $request, Veterinarian $veterinarian)
     {
         $veterinarian->update($request->all());
-
-        return response()->json($veterinarian, 200);
+        return response()->json(['data' => $veterinarian], 200);
     }
 
     /**
@@ -49,7 +52,6 @@ class VeterinarianController extends Controller
     public function destroy(Veterinarian $veterinarian)
     {
         $veterinarian->delete();
-
-        return response()->json(['message' => 'Veterinarian deleted'], 200);
+        return response(null, 204);
     }
 }

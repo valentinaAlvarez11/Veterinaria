@@ -2,11 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VeterinarianController;
-use App\Http\Controllers\SpecialtyController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\PetController;
+use App\Http\Controllers\api\PetController;
+use App\Http\Controllers\api\ClientController;
+use App\Http\Controllers\api\ServiceController;
+use App\Http\Controllers\api\SpecialtyController;
+use App\Http\Controllers\api\VeterinarianController;
 
 
 Route::get('/user', function (Request $request) {

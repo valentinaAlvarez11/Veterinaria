@@ -1,141 +1,82 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
 use App\Models\Service;
-use App\Models\Specialty;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ServiceResource;
+use App\Http\Requests\ServiceStoreRequest;
+use App\Http\Requests\ServiceUpdateRequest;
 
 class ServiceController extends Controller
 {
     /**
-     * Muestra una lista de los servicios disponibles con su especialidad.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * Display a listing of the resource.
      */
     public function index()
     {
-        // Obtener todos los servicios con la especialidad asociada
-        $services = Service::with('specialty')->get();
-
-        return response()->json($services, 200);
+        $services = Service::with('specialty')->orderBy('name', 'asc')->get();
+        return response()->json(['data' => ServiceResource::collection($services)], 200);
     }
 
     /**
-     * Almacena un nuevo servicio.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|unique:services|max:255',
-            'description' => 'nullable|string',
-            'specialty_id' => 'required|exists:specialties,id', // Relación con especialidad
-            'price' => 'required|numeric', // Aseguramos que el precio sea un número
-        ]);
-
-        $service = Service::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'specialty_id' => $request->specialty_id,
-            'price' => $request->price,
-        ]);
-
-        return response()->json([
-            'message' => 'Servicio creado con éxito',
-            'data' => $service,
-        ], 201);
+        $service = Service::create($request->all());
+        return response()->json(['data' => $service], 201);
     }
 
     /**
-     * Muestra un servicio específico.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\JsonResponse
+     * Display the specified resource.
      */
     public function show(Service $service)
     {
-        return response()->json($service, 200);
+        return response()->json(['data' => new ServiceResource($service)], 200);
     }
 
     /**
-     * Actualiza un servicio existente.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\JsonResponse
+     * Update the specified resource in storage.
      */
     public function update(Request $request, Service $service)
     {
-        $request->validate([
-            'name' => 'required|max:255|unique:services,name,' . $service->id,
-            'description' => 'nullable|string',
-            'specialty_id' => 'required|exists:specialties,id', // Relación con especialidad
-            'price' => 'required|numeric',
-        ]);
-
-        $service->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'specialty_id' => $request->specialty_id,
-            'price' => $request->price,
-        ]);
-
-        return response()->json([
-            'message' => 'Servicio actualizado con éxito',
-            'data' => $service,
-        ], 200);
+        $service->update($request->all());
+        return response()->json(['data' => $service], 200);
     }
 
     /**
-     * Elimina un servicio.
-     *
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\JsonResponse
+     * Remove the specified resource from storage.
      */
     public function destroy(Service $service)
     {
         $service->delete();
-
-        return response()->json([
-            'message' => 'Servicio eliminado correctamente',
-        ], 200); 
+        return response(null, 204);
     }
 
     /**
-     * Asocia una especialidad a un servicio.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Service  $service
-     * @return \Illuminate\Http\JsonResponse
+     * Associate a specialty to a service.
      */
     public function associateSpecialty(Request $request, $serviceId)
     {
-        // Validar la entrada
-        $request->validate([
-            'specialty_id' => 'required|exists:specialties,id', // Validamos que la especialidad exista
-            'name' => 'required|string|max:255', // Validamos el nombre del servicio
-        ]);
-    
-        // Encontramos el servicio
+        // Find the service
         $service = Service::findOrFail($serviceId);
-    
-        // Asociamos la especialidad al servicio
+
+        // Associate the specialty to the service
         $service->specialty_id = $request->specialty_id;
-    
-        // Actualizamos el nombre si es necesario
+
+        // Optionally update the name if provided
         if ($request->has('name')) {
             $service->name = $request->name;
         }
-    
-        // Guardamos el servicio actualizado
+
+        // Save the updated service
         $service->save();
-    
+
         return response()->json([
-            'message' => 'Especialidad asociada correctamente al servicio',
+            'message' => 'Specialty successfully associated with service',
             'data' => $service,
         ], 200);
-    }    
+    }
 }
