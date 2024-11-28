@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Specialty;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\SpecialtyResource;
+use App\Models\Specialty;
 use App\Http\Requests\SpecialtyStoreRequest;
 use App\Http\Requests\SpecialtyUpdateRequest;
+use App\Http\Resources\SpecialtyResource;
 
 class SpecialtyController extends Controller
 {
@@ -23,7 +22,7 @@ class SpecialtyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SpecialtyStoreRequest $request)
     {
         $specialty = Specialty::create($request->all());
         return response()->json(['data' => $specialty], 201);
@@ -40,7 +39,7 @@ class SpecialtyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Specialty $specialty)
+    public function update(SpecialtyUpdateRequest $request, Specialty $specialty)
     {
         $specialty->update($request->all());
         return response()->json(['data' => $specialty], 200);

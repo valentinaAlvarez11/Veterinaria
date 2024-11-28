@@ -23,7 +23,7 @@ class VeterinarianController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(VeterinarianStoreRequest $request)
     {
         $veterinarian = Veterinarian::create($request->all());
         return response()->json(['data' => $veterinarian], 201);
@@ -40,7 +40,7 @@ class VeterinarianController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Veterinarian $veterinarian)
+    public function update(VeterinarianUpdateRequest $request, Veterinarian $veterinarian)
     {
         $veterinarian->update($request->all());
         return response()->json(['data' => $veterinarian], 200);

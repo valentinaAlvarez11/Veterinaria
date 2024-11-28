@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Models\Pet;
-use Illuminate\Http\Request;
-use App\Http\Resources\PetResource;
 use App\Http\Controllers\Controller;
+use App\Models\Pet;
 use App\Http\Requests\PetStoreRequest;
 use App\Http\Requests\PetUpdateRequest;
+use App\Http\Resources\PetResource;
 
 class PetController extends Controller
 {
@@ -23,7 +22,7 @@ class PetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PetStoreRequest $request)
     {
         $pet = Pet::create($request->all());
         return response()->json(['data' => $pet], 201);
@@ -41,7 +40,7 @@ class PetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(PetUpdateRequest $request, $id)
     {
         $pet = Pet::findOrFail($id);
         $pet->update($request->all());

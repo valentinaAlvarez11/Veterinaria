@@ -1,16 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\api;
-
-use App\Models\Pet;
-use App\Models\Client;
-use App\Http\Resources\PetResource;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PetStoreRequest;
-use App\Http\Resources\ClientResource;
-use Illuminate\Http\Request;
+use App\Models\Client;
+use App\Models\Pet;
 use App\Http\Requests\ClientStoreRequest;
 use App\Http\Requests\ClientUpdateRequest;
+use App\Http\Requests\PetStoreRequest;
+use App\Http\Resources\ClientResource;
+use App\Http\Resources\PetResource;
 
 class ClientController extends Controller
 {
@@ -26,7 +24,7 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ClientStoreRequest $request)
     {
         $client = Client::create($request->all());
         return response()->json(['data' => new ClientResource($client)], 201);
@@ -44,7 +42,7 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(ClientUpdateRequest $request, Client $client)
     {
         $client->update($request->all());
         return response()->json(['data' => new ClientResource($client)], 200);
@@ -62,7 +60,7 @@ class ClientController extends Controller
     /**
      * Associate a pet to a client.
      */
-    public function addPetToClient(Request $request, $clientId)
+    public function addPetToClient(PetStoreRequest $request, $clientId)
     {
         $client = Client::findOrFail($clientId);
 
