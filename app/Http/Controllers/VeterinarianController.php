@@ -12,7 +12,7 @@ class VeterinarianController extends Controller
      */
     public function index()
     {
-        return Veterinarian::all();
+        return Veterinarian::with('services.specialty')->get();
     }
 
     /**
@@ -30,6 +30,7 @@ class VeterinarianController extends Controller
      */
     public function show(Veterinarian $veterinarian)
     {
+        $veterinarian->load('services.specialty');
         return response()->json($veterinarian, 200);
     }
 
@@ -51,5 +52,20 @@ class VeterinarianController extends Controller
         $veterinarian->delete();
 
         return response()->json(['message' => 'Veterinarian deleted'], 200);
+    }
+
+    public function attachService(Request $request, $veterinarianId)
+    {
+        $request->validate([
+            'services' => 'required|array',
+            'services.*' => 'exists:services,id'
+        ]);
+        $veterinarian = Veterinarian::findOrFail($veterinarianId);
+        $veterinarian->services()->syncWithoutDetaching($request->input('services'));
+
+        return response()->json([
+            'message' => 'Servicios asociados con éxito',
+            'data' => $veterinarian->services
+        ]);
     }
 }

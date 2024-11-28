@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ServicesSeeder::class,
             ClientsSeeder::class,
             UsersSeeder::class,
+            AppointmentSeeder::class,
         ]);
     }
 }

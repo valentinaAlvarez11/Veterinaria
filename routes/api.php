@@ -11,6 +11,7 @@ use App\Http\Controllers\AppointmentController;
 
 
 
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -28,7 +29,16 @@ Route::post('/speciality/{specialty}/services', [ServiceController::class, 'asso
 //Asociar una mascota a un cliente
 Route::post('/clients/{clientId}/pets', [ClientController::class, 'addPetToClient']);
 //Asociar una especialidad y un servicio a un veterinario
-Route::post('/veterinarians/{id}/services', [VeterinarianController::class, 'addServiceToVeterinarian']);
+Route::post('veterinarians/{veterinarian}/services', [VeterinarianController::class, 'attachService']);
+
+
+Route::get('/appointments/pending/{veterinarianId}', [AppointmentController::class, 'pendingAppointments']);
+// Aceptar, rechazar y reprogramar citas
+Route::post('/appointments/accept/{id}', [AppointmentController::class, 'acceptAppointment']);
+Route::post('/appointments/reject/{id}', [AppointmentController::class, 'rejectAppointment']);
+Route::post('/appointments/reschedule/{id}', [AppointmentController::class, 'rescheduleAppointment']);
+
+
 
 //Autenticación
 Route::post('/v1/login',
