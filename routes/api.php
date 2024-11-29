@@ -31,12 +31,12 @@ Route::post('/clients/{clientId}/pets', [ClientController::class, 'addPetToClien
 //Asociar una especialidad y un servicio a un veterinario
 Route::post('veterinarians/{veterinarian}/services', [VeterinarianController::class, 'attachService']);
 //Asignar una cita a un veterinario
-
+Route::post('veterinarians/{id}/appointments', [AppointmentController::class, 'assignToVeterinarian']);
 //Asignar un veterinario a una mascota
 Route::post('pet/{petId}/veterinarians', [PetController::class, 'assignVeterinarians']);
 //Asignar historial médico a una mascota
 
-
+//api/cabins/5/service
 
 Route::get('/appointments/pending/{veterinarianId}', [AppointmentController::class, 'pendingAppointments']);
 // Aceptar, rechazar y reprogramar citas

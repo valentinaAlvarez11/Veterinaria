@@ -54,4 +54,28 @@ class AppointmentController extends Controller
         $appointment->delete();
         return response()->json(['message' => 'Cita eliminada exitosamente'], 200);
     }
+
+    public function assignToVeterinarian(Request $request, $veterinarian_id)
+{
+    // Validar los datos de la solicitud
+    $validated = $request->validate([
+        'client_id' => 'required|exists:clients,id',
+        'appointment_date' => 'required|date|after:now',
+        'reason' => 'required|string|max:255',
+    ]);
+
+    // Crear la cita asociada al veterinario
+    $appointment = Appointment::create([
+        'veterinarian_id' => $veterinarian_id,
+        'client_id' => $validated['client_id'],
+        'appointment_date' => $validated['appointment_date'],
+        'reason' => $validated['reason'],
+    ]);
+
+    // Retornar la respuesta con la cita creada
+    return response()->json([
+        'message' => 'Cita creada y asociada al veterinario con éxito.',
+        'appointment' => $appointment,
+    ], 201);
+}
 }

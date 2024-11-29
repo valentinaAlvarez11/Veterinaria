@@ -41,9 +41,14 @@ class Veterinarian extends Model
 {
     return $this->belongsToMany(Service::class);
     }
-    
+
     public function pets()
     {
     return $this->belongsToMany(Pet::class);
     }
+
+    public function appointments()
+{
+    return $this->hasMany(Appointment::class);
+}
 }

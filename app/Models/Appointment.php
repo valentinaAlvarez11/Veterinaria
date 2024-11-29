@@ -21,30 +21,45 @@ class Appointment extends Model
         'rescheduled_date', // Nuevo campo: fecha de reprogramación
     ];
 
+    // Relación con Client
     public function client()
     {
         return $this->belongsTo(Client::class);
     }
+
+    // Relación con Veterinarian
     public function veterinarian()
     {
         return $this->belongsTo(Veterinarian::class);
     }
+
+    // Relación con Pet
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    // Métodos relacionados con el estado de la cita
     public function isPending()
     {
         return $this->status === 'pending';
     }
+
     public function isAccepted()
     {
         return $this->status === 'accepted';
     }
+
     public function isRejected()
     {
         return $this->status === 'rejected';
     }
+
     public function isRescheduled()
     {
         return $this->status === 'rescheduled';
     }
+
     public function reschedule($newDate)
     {
         $this->update([

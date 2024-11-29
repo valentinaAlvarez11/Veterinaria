@@ -12,7 +12,7 @@ class VeterinarianController extends Controller
      */
     public function index()
     {
-        return Veterinarian::with('services.specialty')->get();
+        return Veterinarian::with(['services.specialty', 'appointments'])->get();
     }
 
     /**
