@@ -1,6 +1,7 @@
 <?php
 
 // app/Models/Pet.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,10 +12,10 @@ class Pet extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 
-        'breed', 
-        'age', 
-        'medical_conditions', 
+        'name',
+        'breed',
+        'age',
+        'medical_conditions',
         'client_id',
     ];
 

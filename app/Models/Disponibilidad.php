@@ -10,7 +10,7 @@ class Disponibilidad extends Model
     use HasFactory;
 
     protected $fillable = [
-        'veterinario_id', 'dia', 'hora_inicio', 'hora_fin'
+        'veterinario_id', 'dia', 'hora_inicio', 'hora_fin',
     ];
 
     protected $casts = [

@@ -1,6 +1,7 @@
 <?php
 
 // app/Http/Controllers/AppointmentController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
@@ -26,9 +27,9 @@ class AppointmentController extends Controller
                 'date',
                 Rule::unique('appointments')->where(function ($query) use ($request) {
                     return $query->where('veterinarian_id', $request->veterinarian_id)
-                                 ->where('appointment_date', $request->appointment_date);
-                })
-            ]
+                        ->where('appointment_date', $request->appointment_date);
+                }),
+            ],
         ]);
         $appointment = Appointment::create($validated);
 
@@ -52,30 +53,28 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::findOrFail($id);
         $appointment->delete();
+
         return response()->json(['message' => 'Cita eliminada exitosamente'], 200);
     }
 
     public function assignToVeterinarian(Request $request, $veterinarian_id)
-{
-    // Validar los datos de la solicitud
-    $validated = $request->validate([
-        'client_id' => 'required|exists:clients,id',
-        'appointment_date' => 'required|date|after:now',
-        'reason' => 'required|string|max:255',
-    ]);
+    {
+        $validated = $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'appointment_date' => 'required|date|after:now',
+            'reason' => 'required|string|max:255',
+        ]);
 
-    // Crear la cita asociada al veterinario
-    $appointment = Appointment::create([
-        'veterinarian_id' => $veterinarian_id,
-        'client_id' => $validated['client_id'],
-        'appointment_date' => $validated['appointment_date'],
-        'reason' => $validated['reason'],
-    ]);
+        $appointment = Appointment::create([
+            'veterinarian_id' => $veterinarian_id,
+            'client_id' => $validated['client_id'],
+            'appointment_date' => $validated['appointment_date'],
+            'reason' => $validated['reason'],
+        ]);
 
-    // Retornar la respuesta con la cita creada
-    return response()->json([
-        'message' => 'Cita creada y asociada al veterinario con éxito.',
-        'appointment' => $appointment,
-    ], 201);
-}
+        return response()->json([
+            'message' => 'Cita creada y asociada al veterinario con éxito.',
+            'appointment' => $appointment,
+        ], 201);
+    }
 }

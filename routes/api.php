@@ -1,16 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VeterinarianController;
-use App\Http\Controllers\SpecialtyController;
-use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PetController;
-use App\Http\Controllers\AppointmentController;
-
-
-
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SpecialtyController;
+use App\Http\Controllers\VeterinarianController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -44,8 +41,6 @@ Route::post('/appointments/accept/{id}', [AppointmentController::class, 'acceptA
 Route::post('/appointments/reject/{id}', [AppointmentController::class, 'rejectAppointment']);
 Route::post('/appointments/reschedule/{id}', [AppointmentController::class, 'rescheduleAppointment']);
 
-
-
 //Autenticación
 Route::post('/v1/login',
     [App\Http\Controllers\api\v1\AuthController::class,
@@ -54,4 +49,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/v1/logout',
         [App\Http\Controllers\api\v1\AuthController::class,
             'logout'])->name('api.logout');
-        });
+});

@@ -1,6 +1,7 @@
 <?php
 
 // app/Models/Appointment.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,11 +13,11 @@ class Appointment extends Model
 
     // Asegúrate de incluir los nuevos campos en $fillable
     protected $fillable = [
-        'client_id', 
-        'veterinarian_id', 
-        'appointment_date', 
-        'reason', 
-        'notes', 
+        'client_id',
+        'veterinarian_id',
+        'appointment_date',
+        'reason',
+        'notes',
         'status',           // Nuevo campo: estado de la cita
         'rescheduled_date', // Nuevo campo: fecha de reprogramación
     ];

@@ -17,9 +17,9 @@ class Service extends Model
     {
         return $this->belongsTo(Specialty::class);
     }
-    public function veterinarians()
-{
-    return $this->belongsToMany(Veterinarian::class);
-}
-}
 
+    public function veterinarians()
+    {
+        return $this->belongsToMany(Veterinarian::class);
+    }
+}
