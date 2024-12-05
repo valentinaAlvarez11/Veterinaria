@@ -6,6 +6,7 @@ use App\Http\Controllers\PetController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\VeterinarianController;
+use App\Http\Controllers\ConsultationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ Route::apiResource('services', ServiceController::class);
 Route::apiResource('clients', ClientController::class);
 Route::apiResource('pets', PetController::class);
 Route::apiResource('appointments', AppointmentController::class);
+Route::apiResource('consultations', ConsultationController::class);
 
 //Asociar una especialidad a un servicio
 Route::post('/speciality/{specialty}/services', [ServiceController::class, 'associateSpecialty']);
@@ -35,11 +37,6 @@ Route::post('pet/{petId}/veterinarians', [PetController::class, 'assignVeterinar
 
 //api/cabins/5/service
 
-Route::get('/appointments/pending/{veterinarianId}', [AppointmentController::class, 'pendingAppointments']);
-// Aceptar, rechazar y reprogramar citas
-Route::post('/appointments/accept/{id}', [AppointmentController::class, 'acceptAppointment']);
-Route::post('/appointments/reject/{id}', [AppointmentController::class, 'rejectAppointment']);
-Route::post('/appointments/reschedule/{id}', [AppointmentController::class, 'rescheduleAppointment']);
 
 //Autenticación
 Route::post('/v1/login',

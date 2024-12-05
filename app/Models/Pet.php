@@ -28,4 +28,8 @@ class Pet extends Model
     {
         return $this->belongsToMany(Veterinarian::class);
     }
+    public function consultations()
+    {
+    return $this->hasMany(Consultation::class);
+    }
 }

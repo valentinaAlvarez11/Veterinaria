@@ -51,4 +51,8 @@ class Veterinarian extends Model
     {
         return $this->hasMany(Appointment::class);
     }
+    public function consultations()
+    {
+    return $this->hasMany(Consultation::class);
+    }
 }
