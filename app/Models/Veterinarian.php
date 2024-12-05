@@ -55,4 +55,10 @@ class Veterinarian extends Model
     {
     return $this->hasMany(Consultation::class);
     }
+
+    public function availabilities()
+{
+    return $this->hasMany(Availability::class);
+}
+
 }

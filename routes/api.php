@@ -7,8 +7,10 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\VeterinarianController;
 use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\AvailabilityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -33,7 +35,9 @@ Route::post('veterinarians/{veterinarian}/services', [VeterinarianController::cl
 Route::post('veterinarians/{id}/appointments', [AppointmentController::class, 'assignToVeterinarian']);
 //Asignar un veterinario a una mascota
 Route::post('pet/{petId}/veterinarians', [PetController::class, 'assignVeterinarians']);
-//Asignar historial médico a una mascota
+//Consultar y crear disponibilidad de los veterinarios
+Route::get('availabilities', [AvailabilityController::class, 'getAvailability']);
+Route::post('availabilities', [AvailabilityController::class, 'createAvailability']);
 
 //api/cabins/5/service
 

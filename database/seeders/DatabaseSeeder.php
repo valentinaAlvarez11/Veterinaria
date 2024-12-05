@@ -27,6 +27,9 @@ class DatabaseSeeder extends Seeder
             ClientsSeeder::class,
             UsersSeeder::class,
             AppointmentSeeder::class,
+            ConsultationSeeder::class,
+            AvailabilitySeeder::class,
+            
         ]);
     }
 }
