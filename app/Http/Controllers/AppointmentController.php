@@ -16,24 +16,24 @@ class AppointmentController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'client_id' => 'required|exists:clients,id',
-            'veterinarian_id' => 'required|exists:veterinarians,id',
-            'appointment_date' => 'required|date',
-            'reason' => 'required|string|max:255',
-            'appointment_date' => [
-                'required',
-                'date',
-                Rule::unique('appointments')->where(function ($query) use ($request) {
-                    return $query->where('veterinarian_id', $request->veterinarian_id)
-                        ->where('appointment_date', $request->appointment_date);
-                }),
-            ],
-        ]);
-        $appointment = Appointment::create($validated);
+{
+    $validated = $request->validate([
+        'client_id' => 'required|exists:clients,id',
+        'veterinarian_id' => 'required|exists:veterinarians,id',
+        'appointment_date' => 'required|date',
+        'reason' => 'required|string|max:255',
+        'appointment_date' => [
+            'required',
+            'date',
+            Rule::unique('appointments')->where(function ($query) use ($request) {
+                return $query->where('veterinarian_id', $request->veterinarian_id)
+                    ->where('appointment_date', $request->appointment_date);
+            }),
+        ],
+    ]);
+    $appointment = Appointment::create($validated);
 
-        return response()->json($appointment, 201);
+    return response()->json(['message' => 'Cita creada con éxito', 'appointment' => $appointment], 201);
     }
 
     public function show($id)
@@ -76,5 +76,13 @@ class AppointmentController extends Controller
             'message' => 'Cita creada y asociada al veterinario con éxito.',
             'appointment' => $appointment,
         ], 201);
+    }
+    public function getClientAppointments($clientId)
+    {
+        $appointments = Appointment::with(['veterinarian'])
+            ->where('client_id', $clientId)
+            ->get();
+
+        return response()->json($appointments, 200);
     }
 }

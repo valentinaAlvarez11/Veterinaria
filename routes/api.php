@@ -38,9 +38,8 @@ Route::post('pet/{petId}/veterinarians', [PetController::class, 'assignVeterinar
 //Consultar y crear disponibilidad de los veterinarios
 Route::get('availabilities', [AvailabilityController::class, 'getAvailability']);
 Route::post('availabilities', [AvailabilityController::class, 'createAvailability']);
-
-//api/cabins/5/service
-
+//Consultar historial de citas de un cliente
+Route::get('clients/{clientId}/appointments', [AppointmentController::class, 'getClientAppointments']);
 
 //Autenticación
 Route::post('/v1/login',
