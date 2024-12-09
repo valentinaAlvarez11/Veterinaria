@@ -8,6 +8,7 @@ use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\VeterinarianController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,9 +25,10 @@ Route::apiResource('clients', ClientController::class);
 Route::apiResource('pets', PetController::class);
 Route::apiResource('appointments', AppointmentController::class);
 Route::apiResource('consultations', ConsultationController::class);
+Route::apiResource('users', UserController::class);
 
-//Asociar una especialidad a un servicio
-Route::post('/speciality/{specialty}/services', [ServiceController::class, 'associateSpecialty']);
+//Asociar una especialidad a un servicio speciality
+Route::post('/services/{specialty}/speciality', [ServiceController::class, 'associateSpecialty']);
 //Asociar una mascota a un cliente
 Route::post('/clients/{clientId}/pets', [ClientController::class, 'addPetToClient']);
 //Asociar una especialidad y un servicio a un veterinario
